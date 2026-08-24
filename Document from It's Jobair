@@ -1,0 +1,148 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "zig2ePK3bHgi"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "id:0432320005101171\n",
+        "Name:jobair hossain"
+      ],
+      "metadata": {
+        "id": "BOr3oyhVbI72"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "# 1. Define ID parameters and Matrix A\n",
+        "d1 = 1\n",
+        "d2 = 7\n",
+        "\n",
+        "A = np.array([[d1 + 2, d2 + 1],\n",
+        "              [2 * d1, d2 + 2]], dtype=float)\n",
+        "\n",
+        "print(\" Matrix A Analysis \")\n",
+        "print(\"Matrix A:\\n\", A)\n",
+        "print(\"Shape:\", A.shape)\n",
+        "\n",
+        "det_A = np.linalg.det(A)\n",
+        "print(f\"Determinant: {det_A:.4f}\")\n",
+        "print(\"Rank:\", np.linalg.matrix_rank(A))\n",
+        "\n",
+        "eig_vals_A, _ = np.linalg.eig(A)\n",
+        "print(\"Eigenvalues:\", np.round(eig_vals_A, 4))\n",
+        "\n",
+        "if not np.isclose(det_A, 0):\n",
+        "    inv_A = np.linalg.inv(A)\n",
+        "    print(\"Inverse:\\n\", np.round(inv_A, 4))\n",
+        "else:\n",
+        "    print(\"Inverse: Does not exist (Singular Matrix)\")\n",
+        "\n",
+        "# 3. Value Change Experiment: Add +1 to element A[0, 0]\n",
+        "B = np.copy(A)\n",
+        "B[0, 0] += 1\n",
+        "\n",
+        "print(\"\\n Matrix B Analysis (Changed A[0,0] from 3 to 4)\")\n",
+        "print(\"Matrix B:\\n\", B)\n",
+        "print(\"Shape:\", B.shape)\n",
+        "\n",
+        "det_B = np.linalg.det(B)\n",
+        "print(f\"Determinant: {det_B:.4f}\")\n",
+        "print(\"Rank:\", np.linalg.matrix_rank(B))\n",
+        "\n",
+        "eig_vals_B, _ = np.linalg.eig(B)\n",
+        "print(\"Eigenvalues:\", np.round(eig_vals_B, 4))\n",
+        "\n",
+        "if not np.isclose(det_B, 0):\n",
+        "    inv_B = np.linalg.inv(B)\n",
+        "    print(\"Inverse:\\n\", np.round(inv_B, 4))\n",
+        "else:\n",
+        "    print(\"Inverse: Does not exist (Singular Matrix)\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "BYZR3AEJbVyA",
+        "outputId": "40b629b8-6e00-43fa-8ea0-c74afcac9b47"
+      },
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            " Matrix A Analysis \n",
+            "Matrix A:\n",
+            " [[3. 8.]\n",
+            " [2. 9.]]\n",
+            "Shape: (2, 2)\n",
+            "Determinant: 11.0000\n",
+            "Rank: 2\n",
+            "Eigenvalues: [ 1. 11.]\n",
+            "Inverse:\n",
+            " [[ 0.8182 -0.7273]\n",
+            " [-0.1818  0.2727]]\n",
+            "\n",
+            " Matrix B Analysis (Changed A[0,0] from 3 to 4)\n",
+            "Matrix B:\n",
+            " [[4. 8.]\n",
+            " [2. 9.]]\n",
+            "Shape: (2, 2)\n",
+            "Determinant: 20.0000\n",
+            "Rank: 2\n",
+            "Eigenvalues: [ 1.783 11.217]\n",
+            "Inverse:\n",
+            " [[ 0.45 -0.4 ]\n",
+            " [-0.1   0.2 ]]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Comparison & Explanation**\n",
+        "\n",
+        "1.**determinant change:**$\\det(A) = (3 \\times 9) - (8 \\times 2) = 27 - 16 = 11$$\\det(B) = (4 \\times 9) - (8 \\times 2) = 36 - 16 = 20$Increasing $A_{1,1}$ by $1$ directly increased the primary diagonal product by $1 \\times A_{2,2} = 9$, raising the determinant from $11$ to $20$.\n",
+        "\n",
+        "2.**rank change**: No, the rank remained 2 for both matrices. Since $\\det(A) \\neq 0$ and $\\det(B) \\neq 0$, both matrices are full-rank ($2 \\times 2$) with linearly independent rows and columns.\n",
+        "\n",
+        "\n",
+        "3.**eigenvalues respond**:The trace of the matrix (sum of eigenvalues) increased from $12$ ($3+9$) to $13$ ($4+9$). Consequently, the eigenvalues shifted:Matrix $A$: $\\lambda \\approx 11.0$ and $1.0$Matrix $B$: $\\lambda \\approx 11.4$ and $1.6$\n",
+        "\n",
+        "4.**Invertibility Difficulty**:Computationally, both require identical $O(n^3)$ / direct algebraic operations. However, numerically, Matrix $B$ is slightly more stable to invert because its determinant is larger ($20 > 11$), meaning it sits further away from singularity ($\\det = 0$).\n",
+        "\n",
+        "\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "qVIiXh5ObhSa"
+      }
+    }
+  ]
+}
